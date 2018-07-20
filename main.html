@@ -17,6 +17,7 @@
     
         socket.on('connect', function () {
             socket.emit('newUser', prompt('insert your name'));
+            $('#userCount').text("채팅방에 입장해 주세요.");
         });
     
         socket.on('updateUserCount', function (clientCount) {
@@ -36,22 +37,33 @@
     
             if (!currentRoom) {
                 $.each(rooms, function (key, value) {
-                    $('#rooms').append('<a href="#" onclick="changeRoom(\'' + value + '\')"> <div class = "roomItem"> Room Name : ' + value + '</div></a>');
+                    $('#rooms').append('<a href="#" onclick="changeRoom(\'' + value + '\')"> <div class = "roomItem"> Room Name : <br>' + value + '</div></a>');
                 });
             } else {
                 $.each(rooms, function (key, value) {
                     if (value == currentRoom) {
-                        $('#rooms').append('<div class = "roomItem"> Room Name : ' + value + '</div>');
+                        $('#rooms').append('<div class = "roomItem"> Room Name : [ENTERED]<br>' + value + '</div>');
                     }
                     else {
-                        $('#rooms').append('<a href="#" onclick="changeRoom(\'' + value + '\')"> <div class = "roomItem">Room Name  : ' + value + '</div></a>');
+                        $('#rooms').append('<a href="#" onclick="changeRoom(\'' + value + '\')"> <div class = "roomItem">Room Name  : <br>' + value + '</div></a>');
                     }
                 });
             }
         });
     
         socket.on('updateChat', function (user, text) {
-            $('#chat').append(  '<p class="talk me"><b>' + user + ':</b> ' + text + '</ p><br>');
+            
+            if(text == "has entered room" ){
+                $('#chat').append(  '<p class="system"><b>' + user + '</b>님이 입장 하셨습니다.</ p><br>');
+            }else if(text == "has left room"  ){
+                $('#chat').append(  '<p class="system"><b>' + user + '</b>님이 퇴장 하셨습니다.</ p><br>');
+            }else{
+                $('#chat').append(  '<p class="talk me"><b>' + user + ':</b> ' + text + '</ p><br>');
+            }
+
+
+
+            $("#chat").scrollTop($("#chat")[0].scrollHeight);
         });
     
         $(function () {
@@ -109,6 +121,7 @@
         width: 100%;
         height: 80%;
         float: left;
+        overflow-y:scroll;
     }
 
 
@@ -137,9 +150,22 @@
         padding: 15px;
         width: 250px; 
     }
+    .system{
+        position: relative;
+        padding: 15px;
+        margin: 1em 0 1em;
+        color: black;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        width: auto; 
+        margin-right: 30px;
+        border: 1px solid #a9bdce;
+        background-color: #a9bdce; 
+        text-align: center;
+    }
 
     .talk {
-        
         position: relative;
         padding: 15px;
         margin: 1em 0 1em;
@@ -220,6 +246,20 @@
         border-width: 9px 0 9px 21px;
         border-color: transparent #ffec42; }
 
+    @media all and (min-width:320px){ 
+
+    /* 스타일 지정 부분*/
+    }
+
+    @media all and (min-width:768px){ 
+
+    /* 스타일 지정 부분*/
+    }
+    @media all and (min-width:1024px){ 
+
+    /* 스타일 지정 부분*/
+    }
+
     .msg {
         width: 83%;
         height: 100%;
@@ -246,6 +286,22 @@
         vertical-align: middle;
         border: 0px solid transparent;
         height: 46px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px; }
+
+        .subTitle {
+        width: 18%;
+        height: 100%;
+        background-color: #ffec42;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        border: 0px solid transparent;
         padding: 6px 12px;
         font-size: 14px;
         line-height: 1.42857;
@@ -282,8 +338,17 @@
     </div>
 
     <div id="right">
-        <div id="userCount"></div>
-        <div id="user"></div>
+        <div class = "subTitle" >User Count</div><br/>&nbsp;
+        <div id="userCount"></div><br/><br/><br/>
+        <div class = "subTitle" >Rank Keyword</div>
+        <div id="rankKeyWord">
+            <p>&nbsp;<a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=치킨" target="_blank" >1. 치킨 / 15회</a></p>
+            <p>&nbsp;2. 아마톤 / 15회</p>
+            <p>&nbsp;3. AWS / 15회</p>
+            <p>&nbsp;4. MARU180 / 15회</p>
+            <p>&nbsp;5. 아이유 / 15회</p>
+
+        </div>
     </div>
 
 
