@@ -82,5 +82,4 @@ io.sockets.on('connection', function (socket) {
             io.to(socket.room).emit('updateUserCount', clients.length);
         });
     });
-
 });
