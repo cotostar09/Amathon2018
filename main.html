@@ -12,12 +12,31 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script>
-
+        let username=null;
         var socket = io.connect('http://localhost:3000');
-    
+
         socket.on('connect', function () {
-            socket.emit('newUser', prompt('insert your name'));
-            $('#userCount').text("채팅방에 입장해 주세요.");
+            
+            
+
+            let loopMakeName = true;
+            while(loopMakeName){
+                username = prompt('insert your name');
+                if(username == null){
+                    alert('이름은 꼭 필요합니다. 다시 입력해주세요.');
+                }else if(username == ''){
+                    alert('이름은 꼭 필요합니다. 다시 입력해주세요.');
+                }else{
+                    socket.emit('newUser', username);
+                    $('#userCount').text("채팅방에 입장해 주세요.");
+                    loopMakeName = false;
+                }
+
+            }
+            
+            
+
+            
         });
     
         socket.on('updateUserCount', function (clientCount) {
@@ -57,18 +76,21 @@
                 $('#chat').append(  '<p class="system"><b>' + user + '</b>님이 입장 하셨습니다.</ p><br>');
             }else if(text == "has left room"  ){
                 $('#chat').append(  '<p class="system"><b>' + user + '</b>님이 퇴장 하셨습니다.</ p><br>');
-            }else{
+            }else if(user==username){
                 $('#chat').append(  '<p class="talk me"><b>' + user + ':</b> ' + text + '</ p><br>');
+            }else{
+                $('#chat').append(  '<p class="talk other"><b>' + user + ':</b> ' + text + '</ p><br>');
             }
-
-
 
             $("#chat").scrollTop($("#chat")[0].scrollHeight);
         });
+
+        socket.on('getTopWord', function (words) {
+        console.log(words);
+        // 여기에 top 5 word 넘어옴
+        });
     
         $(function () {
-    
-    
             $('#send').click(function () {
                 var msg = $('#message').val();
                 $('#message').val('');
@@ -85,7 +107,16 @@
         });
     
         function makeRoom() {
-            socket.emit('makeRoom', prompt('insert Room name'));
+            let roomName='';
+            roomName = prompt('insert Room name');
+            if(roomName ==null ){
+                alert('방 만들기를 취소합니다.');
+            }else if(roomName == ''){
+                alert('이름이 너무 짧습니다.');
+            }else{
+                socket.emit('makeRoom', roomName);
+            }
+            
         }
     
         function changeRoom(room) {
@@ -178,11 +209,13 @@
 
     .talk.other {
         margin-left: 30px;
+        margin-right: 30px;
         border: 5px solid #fff;
         background: #fff; 
     }
 
     .talk.me {
+        margin-left: 30px;
         margin-right: 30px;
         border: 5px solid #ffec42;
         background-color: #ffec42; }
@@ -312,7 +345,6 @@
         width: auto;
         height: 350px; }
 
-    
 </style>
 
 
