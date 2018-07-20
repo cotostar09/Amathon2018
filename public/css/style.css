@@ -1,0 +1,58 @@
+#container {
+    width: 700px;
+    height: 400px;
+    margin: auto;
+    border: 1px solid;
+}
+
+#left {
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid;
+    float: left;
+}
+
+#center {
+    width: 50%;
+    height: 100%;
+    border-right: 1px solid;
+    float: left;
+}
+
+#chat {
+    width: 100%;
+    height: 93%;
+    border-right: 1px solid;
+    float: left;
+}
+
+#footer {
+    width: 100%;
+    height: 7%;
+    border-top: 1px solid;
+    float: left;
+}
+
+#right {
+    width: 24.7%;
+    height: 100%;
+    float: left;
+}
+
+#userCount {
+    color: #aa1900;
+    width: 100%;
+    height: 5%;
+    border-bottom: 1px solid;
+}
+
+#makeRoomBtn {
+    width: 100%;
+    height: 7%;
+    border-bottom: 1px solid;
+}
+
+#rooms {
+    width: 100%;
+    height: 92%;
+}

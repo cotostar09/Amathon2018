@@ -1,10 +1,17 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
-server.listen(3000);
+app.use( express.static( __dirname + '/'));
+
+server.listen(3000, function(){
+    console.log('Conneted 3000 port!');
+});
+
+app.use(express.static(path.join(__dirname,'public')));
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/main.html');
